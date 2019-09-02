@@ -32,8 +32,8 @@ const IndexPage = () => {
         const tokens = tokenizer.tokenize(value)
         const nouns = new Map<string, number>()
         tokens.forEach(token => {
-          if (token.pos === '名詞') {
-            const word = token.surface_form
+          const word = token.surface_form
+          if (token.pos === '名詞' && !word.match(/[^ぁ-んァ-ンーa-zA-Z0-9一-龠０-９\-\r]+/u)) {
             const count = nouns.get(word)
             nouns.set(word, count ? count + 1 : 1)
           }
