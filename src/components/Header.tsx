@@ -31,14 +31,24 @@ const HomepageLink = styled(Link)`
   }
 `
 
+const Description = styled.span`
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+`
+
 interface HeaderProps {
   title: string
+  description: string
 }
 
-const Header: React.FC<HeaderProps> = ({ title }) => (
+const Header: React.FC<HeaderProps> = ({ title, description }) => (
   <StyledHeader>
     <HeaderInner>
-      <HomepageLink to="/">{title}</HomepageLink>
+      <HomepageLink to="/">
+        {title}
+        <Description>{description}</Description>
+      </HomepageLink>
     </HeaderInner>
   </StyledHeader>
 )

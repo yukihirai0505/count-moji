@@ -2,14 +2,14 @@
 
 module.exports = {
   siteMetadata: {
-    title: 'gatsby-starter-typescript-plus',
-    description: 'A starter kit for TypeScript-based Gatsby projects with sensible defaults.',
-    keywords: 'gatsbyjs, gatsby, javascript, sample, something',
-    siteUrl: 'https://gatsby-starter-typescript-plus.netlify.com',
+    title: 'カウント文字',
+    description: '文章の中で使用されている単語を頻出順に表示します。',
+    keywords: '文章, コピペ, 頻出順, 頻出単語順, 頻出単語, カウント',
+    siteUrl: 'https://count-moji.yabaiwebyasan.com',
     author: {
-      name: 'Resi Respati',
-      url: 'https://twitter.com/resir014',
-      email: 'resir014@gmail.com'
+      name: 'Yuki Hirai',
+      url: 'https://twitter.com/iamseninja',
+      email: 'yukihirai0505@gmail.com'
     }
   },
   plugins: [

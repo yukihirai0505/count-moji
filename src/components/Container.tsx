@@ -10,6 +10,10 @@ const StyledContainer = styled.div`
   margin-right: auto;
   width: auto;
   max-width: ${getEmSize(widths.lg)}em;
+  @media screen and (min-width: 768px) {
+    display: flex;
+    justify-content: space-between;
+  }
 `
 
 interface ContainerProps {
