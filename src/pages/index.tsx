@@ -48,6 +48,7 @@ const IndexPage = () => {
   const countMoji = () => {
     setLoading(true)
     kuromoji.builder({ dicPath: '/dict' }).build((err, tokenizer) => {
+      console.log('start kuromoji')
       if (err) {
         console.log(err)
       } else {
@@ -63,6 +64,7 @@ const IndexPage = () => {
         setWords(mapSortByValue(nouns))
       }
       setLoading(false)
+      console.log('finish kuromoji')
     })
   }
   return (
