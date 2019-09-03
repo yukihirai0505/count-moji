@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import Page from '../components/Page'
 import Container from '../components/Container'
 import IndexLayout from '../layouts'
-import kuromoji from 'kuromoji'
 import styled from '@emotion/styled'
 
 const Item = styled.div`
