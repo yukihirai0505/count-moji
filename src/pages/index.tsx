@@ -34,38 +34,29 @@ const StyledTextarea = styled.textarea`
   width: 100%;
 `
 
-const mapSortByValue = (map: Map<string, number>): Map<string, number> => {
-  return new Map([...map.entries()].sort((a, b) => b[1] - a[1]))
+interface WordSet {
+  word: string
+  count: number
 }
 
 const IndexPage = () => {
   const [inputVal, setInputVal] = useState('')
-  const [words, setWords] = useState<Map<string, number>>(() => new Map())
+  const [words, setWords] = useState<WordSet[]>([])
   const [isLoading, setLoading] = useState(false)
   const changeInput = (value: string) => {
     setInputVal(value)
   }
-  const countMoji = () => {
+  const countMoji = async () => {
     setLoading(true)
-    kuromoji.builder({ dicPath: '/dict' }).build((err, tokenizer) => {
-      console.log('start kuromoji')
-      if (err) {
-        console.log(err)
-      } else {
-        const tokens = tokenizer.tokenize(inputVal)
-        const nouns = new Map<string, number>()
-        tokens.forEach(token => {
-          const word = token.surface_form
-          if (token.pos === '名詞' && !word.match(/[^ぁ-んァ-ンーa-zA-Z0-9一-龠０-９\-\r]+/u)) {
-            const count = nouns.get(word)
-            nouns.set(word, count ? count + 1 : 1)
-          }
-        })
-        setWords(mapSortByValue(nouns))
-      }
-      setLoading(false)
-      console.log('finish kuromoji')
+    const response = await fetch('https://jp-tokenize-api.yukihirai0505.now.sh', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ q: inputVal })
     })
+    setWords(await response.json())
+    setLoading(false)
   }
   return (
     <IndexLayout>
@@ -89,11 +80,12 @@ const IndexPage = () => {
                   </tr>
                 </thead>
                 <tbody>
+                  {console.log(words)}
                   {words &&
-                    [...words.entries()].map((word, idx) => (
+                    words.map((w, idx) => (
                       <tr key={idx}>
-                        <td>{word[0]}</td>
-                        <td>{word[1]}</td>
+                        <td>{w.word}</td>
+                        <td>{w.count}</td>
                       </tr>
                     ))}
                 </tbody>
