@@ -3,7 +3,7 @@
 module.exports = {
   siteMetadata: {
     title: 'カウント文字',
-    description: '文章の中で使用されている単語を頻出順に表示します。',
+    description: '文章中の単語を頻出順に表示します。',
     keywords: '文章, コピペ, 頻出順, 頻出単語順, 頻出単語, カウント',
     siteUrl: 'https://count-moji.yabaiwebyasan.com',
     author: {
