@@ -6,6 +6,19 @@ import IndexLayout from '../layouts'
 import kuromoji from 'kuromoji'
 import styled from '@emotion/styled'
 
+const Item = styled.div`
+  width: 100%;
+`
+
+const StyledSkeleton = styled.div`
+  @media screen and (min-width: 768px) {
+    margin-left: 40px;
+  }
+  @media screen and (max-width: 767px) {
+    margin-top: 40px;
+  }
+`
+
 const StyledTable = styled.table`
   width: 100%;
   @media screen and (min-width: 768px) {
@@ -16,6 +29,11 @@ const StyledTable = styled.table`
   }
 `
 
+const StyledTextarea = styled.textarea`
+  height: 364px;
+  width: 100%;
+`
+
 const mapSortByValue = (map: Map<string, number>): Map<string, number> => {
   return new Map([...map.entries()].sort((a, b) => b[1] - a[1]))
 }
@@ -23,13 +41,17 @@ const mapSortByValue = (map: Map<string, number>): Map<string, number> => {
 const IndexPage = () => {
   const [inputVal, setInputVal] = useState('')
   const [words, setWords] = useState<Map<string, number>>(() => new Map())
+  const [isLoading, setLoading] = useState(false)
   const changeInput = (value: string) => {
     setInputVal(value)
+  }
+  const countMoji = () => {
+    setLoading(true)
     kuromoji.builder({ dicPath: '/dict' }).build((err, tokenizer) => {
       if (err) {
         console.log(err)
       } else {
-        const tokens = tokenizer.tokenize(value)
+        const tokens = tokenizer.tokenize(inputVal)
         const nouns = new Map<string, number>()
         tokens.forEach(token => {
           const word = token.surface_form
@@ -40,34 +62,42 @@ const IndexPage = () => {
         })
         setWords(mapSortByValue(nouns))
       }
+      setLoading(false)
     })
   }
   return (
     <IndexLayout>
       <Page>
         <Container>
-          <div style={{ width: '100%' }}>
-            <textarea style={{ height: '364px', width: '100%' }} value={inputVal} onChange={e => changeInput(e.target.value)} />
-          </div>
-          <div style={{ width: '100%' }}>
-            <StyledTable>
-              <thead>
-                <tr>
-                  <th>Word</th>
-                  <th>Count</th>
-                </tr>
-              </thead>
-              <tbody>
-                {words &&
-                  [...words.entries()].map((word, idx) => (
-                    <tr key={idx}>
-                      <td>{word[0]}</td>
-                      <td>{word[1]}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </StyledTable>
-          </div>
+          <Item>
+            <StyledTextarea value={inputVal} onChange={e => changeInput(e.target.value)} />
+            <button onClick={countMoji}>カウントする</button>
+          </Item>
+          <Item>
+            {isLoading ? (
+              <StyledSkeleton>
+                <p>カウント中...</p>
+              </StyledSkeleton>
+            ) : (
+              <StyledTable>
+                <thead>
+                  <tr>
+                    <th>単語</th>
+                    <th>カウント</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {words &&
+                    [...words.entries()].map((word, idx) => (
+                      <tr key={idx}>
+                        <td>{word[0]}</td>
+                        <td>{word[1]}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </StyledTable>
+            )}
+          </Item>
         </Container>
       </Page>
     </IndexLayout>
